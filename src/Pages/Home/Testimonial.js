@@ -7,25 +7,25 @@ import TestimonialCard from './TestimonialCard';
 
 
 const Testimonial = () => {
-    const authors=[
-        {_id:1, title: 'Winson Herry', city: "Dhaka", img: people1 },
-        {_id:1, title: 'Jenifar Herry', city: "Dhaka", img: people2},
-        {_id:1, title: 'Kajal Kranti', city: "Dhaka", img: people3}
+    const authors = [
+        { _id: 1, title: 'Winson Herry', city: "Dhaka", img: people1 },
+        { _id: 2, title: 'Jenifar Herry', city: "Dhaka", img: people2 },
+        { _id: 3, title: 'Kajal Kranti', city: "Dhaka", img: people3 }
     ];
     return (
         <section className='py-8 lg:py-14'>
-            <div className='flex'>
+            <div className='flex justify-between'>
                 <div className='flex-1 items-start'>
-                    <h3 className='text-secondary text-xl font-bold uppercase'>Testimonial</h3>
-                    <h1 className='text-3xl'>What Our Patients Says</h1>
+                    <h3 className='text-secondary text-md font-bold uppercase'>Testimonial</h3>
+                    <h1 className='text-2xl lg:text-3xl'>What Our Patients Says</h1>
                 </div>
                 <div className='flex justify-end items-end'>
-                    <img style={{height: 156}} src={quote} alt="quote" />
+                    <img className='w-24 lg:w-48' src={quote} alt="quote" />
                 </div>
             </div>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-5 my-5'>
                 {
-                    authors.map(author=><TestimonialCard key={author._id} author={author}></TestimonialCard>)
+                    authors.map( author => <TestimonialCard key={author._id} author={author}></TestimonialCard> )
                 }
             </div>
         </section>

@@ -1,33 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import footer from '../../assets/images/footer.png';
 
 const Footer = () => {
     return (
-        <div>
-            <footer class="footer p-10">
+        <section style={{ background: `url(${ footer })`, backgroundSize: 'cover' }}>
+            <footer className="footer px-12">
                 <div>
-                    <span class="footer-title">Services</span>
-                    <Link to="" class="link link-hover">Branding</Link>
-                    <Link to="" class="link link-hover">Design</Link>
-                    <Link to="" class="link link-hover">Marketing</Link>
-                    <Link to="" class="link link-hover">Advertisement</Link>
+                    <span className="footer-title">Services</span>
+                    <Link to="" className="link link-hover">Branding</Link>
+                    <Link to="" className="link link-hover">Design</Link>
+                    <Link to="" className="link link-hover">Marketing</Link>
+                    <Link to="" className="link link-hover">Advertisement</Link>
                 </div>
                 <div>
-                    <span class="footer-title">Company</span>
-                    <Link to="" class="link link-hover">About us</Link>
-                    <Link to="" class="link link-hover">Contact</Link>
-                    <Link to="" class="link link-hover">Jobs</Link>
-                    <Link to="" class="link link-hover">Press kit</Link>
+                    <span className="footer-title">ORAL HEALTH</span>
+                    <Link to="" className="link link-hover">Terms of use</Link>
+                    <Link to="" className="link link-hover">Privacy policy</Link>
+                    <Link to="" className="link link-hover">Cookie policy</Link>
                 </div>
                 <div>
-                    <span class="footer-title">Legal</span>
-                    <Link to="" class="link link-hover">Terms of use</Link>
-                    <Link to="" class="link link-hover">Privacy policy</Link>
-                    <Link to="" class="link link-hover">Cookie policy</Link>
+                    <span className="footer-title">Company</span>
+                    <Link to="" className="link link-hover">About us</Link>
+                    <Link to="" className="link link-hover">Contact</Link>
+                    <Link to="" className="link link-hover">Jobs</Link>
+                    <Link to="" className="link link-hover">Press kit</Link>
                 </div>
             </footer>
-            <footer></footer>
-        </div>
+            <footer>
+                <p className='text-center py-4'>Copyright 2022 All Rights Reserved</p>
+            </footer>
+        </section>
     );
 };
 
