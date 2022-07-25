@@ -9,7 +9,7 @@ const AppointmentBanner = ( { date, setDate } ) => {
         <section style={{ background: `url(${ bg })`, backgroundSize: 'cover' }}>
             <div className="hero py-6 lg:py-12">
                 <div className="hero-content flex-col lg:flex-row-reverse">
-                    <img src={chair} className="max-w-sm rounded-lg shadow-2xl" alt='banner' />
+                    <img src={chair} className="lg:max-w-sm rounded-lg shadow-2xl" alt='banner' />
                     <div className='mt-10 lg:mt-0'>
                         <DayPicker
                             mode="single"

@@ -4,7 +4,7 @@ const AppointmentCard = ( { service, setTreatment } ) => {
     const { name, slots } = service;
     return (
 
-        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card bg-base-100 shadow-xl">
             <div className="card-body text-center">
                 <h2 className="text-xl font-bold text-secondary">{name}</h2>
                 <p>{slots.length > 0 ? <span>{slots[ 0 ]}</span> : <span className='text-red-500'>Slot is not available</span>}</p>
