@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Loading from './Loading';
 
 const SocialLogin = () => {
     const navigate = useNavigate();
@@ -10,22 +11,20 @@ const SocialLogin = () => {
 
     const from = location.state?.from?.pathname || "/";
 
-
-    if ( error ) {
-        return (
-            <div>
-                <p>Error: {error.message}</p>
-            </div>
-        );
+    useEffect(()=>{
+        if(user){
+            navigate(from, { replace: true });
+        }
+    },[user,from,navigate]);
+    
+    let errorMessage;
+    if(error){
+        errorMessage=<p className='text-red-500'>{error?.message}</p>
     }
-    if ( loading ) {
-        return <p>Loading...</p>;
+    if(loading){
+        return <Loading></Loading>
     }
-    if ( user ) {
-        console.log( user );
-        navigate( '/' );
-
-    }
+    
     const handleSocialLogin = async () => {
         await signInWithGoogle();
     };

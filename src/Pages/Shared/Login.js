@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -8,22 +8,37 @@ import Loading from './Loading';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const [signInWithEmailAndPassword, user,loading,error] = useSignInWithEmailAndPassword(auth);
+    
     const navigate = useNavigate();
     const location = useLocation();
-
     const from = location.state?.from?.pathname || "/";
 
-    const onSubmit = data => {
-        console.log( data );
+    useEffect(()=>{
+        if(user){
+            navigate(from, { replace: true });
+        }
+    },[user,from,navigate]);
 
+    let errorMessage;
+    if(error){
+        errorMessage=<p className='text-red-500'>{error?.message}</p>
+    }
+    if(loading){
+        return <Loading></Loading>
+    }
+    
+    const onSubmit =async data => {
+        await signInWithEmailAndPassword(data.email,data.password);
     };
 
     return (
         <div className='mx-auto lg:mt-10 shadow-2xl p-4 mt-5 max-w-sm'>
             <form onSubmit={handleSubmit( onSubmit )} className='grid grid-cols-1 gap-5 max-w-xs mx-auto'>
                 <h3 className='text-secondary text-center text-xl uppercase font-bold'>Login</h3>
-                <div class="form-control w-full max-w-xs">
-                    <input type="email" placeholder="Email" class="w-full input input-secondary bg-white max-w-sm" {...register( "email",
+                {errorMessage}
+                <div className="form-control w-full max-w-xs">
+                    <input type="email" placeholder="Email" className="w-full input input-secondary bg-white max-w-sm" {...register( "email",
                         {
                             required: {
                                 value: true,
@@ -35,13 +50,13 @@ const Login = () => {
                             }
                         } )}
                     />
-                    <label class="label">
+                    <label className="label">
                         {errors.email?.type === 'required' && <span className='label-text-alt text-red-500'>{errors.email.message}</span>}
                         {errors.email?.type === 'pattern' && <span className='label-text-alt text-red-500'>{errors.email.message}</span>}
                     </label>
                 </div>
-                <div class="form-control w-full max-w-xs">
-                    <input type="password" placeholder="Password" class="w-full input input-secondary bg-white max-w-sm" {...register( "password",
+                <div className="form-control w-full max-w-xs">
+                    <input type="password" placeholder="Password" className="w-full input input-secondary bg-white max-w-sm" {...register( "password",
                         {
                             required: {
                                 value: true,
@@ -53,7 +68,7 @@ const Login = () => {
                             }
                         } )}
                     />
-                    <label class="label">
+                    <label className="label">
                         {errors.password?.type === 'required' && <span className='label-text-alt text-red-500'>{errors.password.message}</span>}
                         {errors.password?.type === 'minLength' && <span className='label-text-alt text-red-500'>{errors.password.message}</span>}
                     </label>

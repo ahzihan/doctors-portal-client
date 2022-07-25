@@ -1,9 +1,16 @@
 import { format } from 'date-fns';
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
 
 const BookingModal = ( { treatment, date, setTreatment } ) => {
     const { name, slots } = treatment;
+    const [user,loading]=useAuthState(auth);
 
+    if(loading){
+        return <Loading></Loading>
+    }
     const handleBooking = event => {
         event.preventDefault();
         const date = event.target.date.value;
@@ -19,7 +26,6 @@ const BookingModal = ( { treatment, date, setTreatment } ) => {
             },
             body: JSON.stringify(service)
         })
-        console.log( date, slot, name, email, phone );
         setTreatment( null );
     };
     return (
@@ -33,12 +39,12 @@ const BookingModal = ( { treatment, date, setTreatment } ) => {
                         <input className='w-full input input-secondary bg-white' type="text" name="date" value={format( date, 'PP' )} disabled />
                         <select name='slot' className="select select-secondary w-full bg-white">
                             {
-                                slots.map( slot => <option value={slot}>{slot}</option> )
+                                slots.map( (slot,index) => <option key={index} value={slot}>{slot}</option> )
                             }
                         </select>
-                        <input className='w-full input input-secondary bg-white' type="text" name="name" placeholder='Full Name' />
+                        <input className='w-full input input-secondary bg-white' type="text" name="name" value={user?.displayName || ''} disabled />
                         <input className='w-full input input-secondary bg-white' type="text" name="phone" placeholder='Phone Number' />
-                        <input className='w-full input input-secondary bg-white' type="text" name="email" placeholder='Email' />
+                        <input className='w-full input input-secondary bg-white' type="text" name="email" value={user?.email || ''} disabled />
                         <input className='btn bg-gradient-to-r from-secondary to-primary uppercase text-white font-bold border-0 w-full' type="submit" value='Booking Now' />
                     </form>
                 </div>
