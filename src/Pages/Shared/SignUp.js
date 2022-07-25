@@ -1,12 +1,11 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin';
-import Loading from './Loading';
 
-const Login = () => {
+const SignUp = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
     const location = useLocation();
@@ -18,10 +17,24 @@ const Login = () => {
 
     };
 
+
     return (
         <div className='mx-auto lg:mt-10 shadow-2xl p-4 mt-5 max-w-sm'>
             <form onSubmit={handleSubmit( onSubmit )} className='grid grid-cols-1 gap-5 max-w-xs mx-auto'>
-                <h3 className='text-secondary text-center text-xl uppercase font-bold'>Login</h3>
+                <h3 className='text-secondary text-center text-xl uppercase font-bold'>Sign Up</h3>
+                <div class="form-control w-full max-w-xs">
+                    <input type="name" placeholder="Name" class="w-full input input-secondary bg-white max-w-sm" {...register( "name",
+                        {
+                            required: {
+                                value: true,
+                                message: 'Name is required'
+                            }
+                        } )}
+                    />
+                    <label class="label">
+                        {errors.name?.type === 'required' && <span className='label-text-alt text-red-500'>{errors.name.message}</span>}
+                    </label>
+                </div>
                 <div class="form-control w-full max-w-xs">
                     <input type="email" placeholder="Email" class="w-full input input-secondary bg-white max-w-sm" {...register( "email",
                         {
@@ -58,9 +71,8 @@ const Login = () => {
                         {errors.password?.type === 'minLength' && <span className='label-text-alt text-red-500'>{errors.password.message}</span>}
                     </label>
                 </div>
-                <p><Link className='link text-secondary' to="">Forget Password?</Link></p>
-                <input type="submit" value="Login" className="btn bg-gradient-to-r from-secondary to-primary uppercase text-white font-bold border-0 w-full max-w-sm" />
-                <p>New to Doctors Portal? <Link className='text-secondary' to="/signup">Create new account</Link></p>
+                <input type="submit" value="Sign Up" className="btn bg-gradient-to-r from-secondary to-primary uppercase text-white font-bold border-0 w-full max-w-sm" />
+                <p>Already have an account? <Link className='text-secondary' to="/login">Login</Link></p>
                 <div className="divider">OR</div>
             </form>
             <SocialLogin />
@@ -68,4 +80,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignUp;
