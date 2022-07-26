@@ -1,35 +1,47 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin';
 import Loading from './Loading';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [signInWithEmailAndPassword, user,loading,error] = useSignInWithEmailAndPassword(auth);
-    
+    const [ signInWithEmailAndPassword, user, loading, error ] = useSignInWithEmailAndPassword( auth );
+    const [ sendPasswordResetEmail, sending ] = useSendPasswordResetEmail( auth );
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    useEffect(()=>{
-        if(user){
-            navigate(from, { replace: true });
+    useEffect( () => {
+        if ( user ) {
+            navigate( from, { replace: true } );
+            toast( "User Login successfully" );
         }
-    },[user,from,navigate]);
+    }, [ user, from, navigate ] );
 
     let errorMessage;
-    if(error){
-        errorMessage=<p className='text-red-500'>{error?.message}</p>
+    if ( error ) {
+        errorMessage = <p className='text-red-500'>{error?.message}</p>;
     }
-    if(loading){
-        return <Loading></Loading>
+    if ( loading || sending ) {
+        return <Loading></Loading>;
     }
-    
-    const onSubmit =async data => {
-        await signInWithEmailAndPassword(data.email,data.password);
+
+    const onSubmit = async data => {
+        await signInWithEmailAndPassword( data.email, data.password );
+    };
+
+    const handleRestPassword = async ( data ) => {
+        if ( data.email ) {
+            await sendPasswordResetEmail( data.email );
+            toast( 'Sent email' );
+        } else {
+            toast( 'Please Enter your email address.' );
+        }
     };
 
     return (
@@ -73,7 +85,7 @@ const Login = () => {
                         {errors.password?.type === 'minLength' && <span className='label-text-alt text-red-500'>{errors.password.message}</span>}
                     </label>
                 </div>
-                <p><Link className='link text-secondary' to="">Forget Password?</Link></p>
+                <p className='my-0'><button onClick={handleRestPassword} className='btn btn-xs btn-link text-decoration-none text-secondary'>Forget Password?</button></p>
                 <input type="submit" value="Login" className="btn bg-gradient-to-r from-secondary to-primary uppercase text-white font-bold border-0 w-full max-w-sm" />
                 <p>New to Doctors Portal? <Link className='text-secondary' to="/signup">Create new account</Link></p>
                 <div className="divider">OR</div>

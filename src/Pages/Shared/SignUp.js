@@ -1,48 +1,51 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {useCreateUserWithEmailAndPassword,useUpdateProfile} from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import SocialLogin from "./SocialLogin";
 import Loading from "./Loading";
+import { toast } from 'react-toastify';
 
 
 const SignUp = () => {
-  const {register,formState: { errors }, handleSubmit} = useForm();
+  const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
-  const [updateProfile, updating, uError] = useUpdateProfile(auth);
+  const [ createUserWithEmailAndPassword, user, loading, error ] =
+    useCreateUserWithEmailAndPassword( auth, { sendEmailVerification: true } );
+  const [ updateProfile, updating, uError ] = useUpdateProfile( auth );
   let errorMessage;
 
-  useEffect(()=>{
-    if(user){
-        navigate(from, { replace: true });
+  useEffect( () => {
+    if ( user ) {
+      toast( "Create user successfully" );
+      navigate( from, { replace: true } );
     }
-},[user,from,navigate]);
-  if (error || uError) {
+  }, [ user, from, navigate ] );
+
+  if ( error || uError ) {
     errorMessage = (
       <p className="text-red-500">{error?.message || uError?.message}</p>
     );
   }
 
-  if (loading || updating) {
+  if ( loading || updating ) {
     return <Loading></Loading>;
   }
-  
 
-  const onSubmit = async (data) => {
-    await createUserWithEmailAndPassword(data.email, data.password);
-    await updateProfile({ displayName: data.name });
+
+  const onSubmit = async ( data ) => {
+    await createUserWithEmailAndPassword( data.email, data.password );
+    await updateProfile( { displayName: data.name } );
   };
 
   return (
     <div className="mx-auto lg:mt-10 shadow-2xl p-4 mt-5 max-w-sm">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit( onSubmit )}
         className="grid grid-cols-1 gap-5 max-w-xs mx-auto"
       >
         <h3 className="text-secondary text-center text-xl uppercase font-bold">
@@ -54,12 +57,12 @@ const SignUp = () => {
             type="name"
             placeholder="Name"
             className="w-full input input-secondary bg-white max-w-sm"
-            {...register("name", {
+            {...register( "name", {
               required: {
                 value: true,
                 message: "Name is required",
               },
-            })}
+            } )}
           />
           <label className="label">
             {errors.name?.type === "required" && (
@@ -74,7 +77,7 @@ const SignUp = () => {
             type="email"
             placeholder="Email"
             className="w-full input input-secondary bg-white max-w-sm"
-            {...register("email", {
+            {...register( "email", {
               required: {
                 value: true,
                 message: "Email is required",
@@ -83,7 +86,7 @@ const SignUp = () => {
                 value: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
                 message: "Provide a valid email",
               },
-            })}
+            } )}
           />
           <label className="label">
             {errors.email?.type === "required" && (
@@ -103,7 +106,7 @@ const SignUp = () => {
             type="password"
             placeholder="Password"
             className="w-full input input-secondary bg-white max-w-sm"
-            {...register("password", {
+            {...register( "password", {
               required: {
                 value: true,
                 message: "Password is required",
@@ -112,7 +115,7 @@ const SignUp = () => {
                 value: 6,
                 message: "At least 6 character or long",
               },
-            })}
+            } )}
           />
           <label className="label">
             {errors.password?.type === "required" && (

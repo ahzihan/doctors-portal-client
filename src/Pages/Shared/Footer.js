@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import footer from '../../assets/images/footer.png';
 
 const Footer = () => {
+    const today = new Date();
+    const year = today.getFullYear();
     return (
-        <section style={{ background: `url(${ footer })`, backgroundSize: 'cover' }}>
-            <footer className="footer px-12">
+        <section className='mt-8' style={{ background: `url(${ footer })`, backgroundSize: 'cover' }}>
+            <footer className="footer py-5 lg:py-10 px-12">
                 <div>
                     <span className="footer-title">Services</span>
                     <Link to="" className="link link-hover">Branding</Link>
@@ -21,14 +23,14 @@ const Footer = () => {
                 </div>
                 <div>
                     <span className="footer-title">Company</span>
-                    <Link to="" className="link link-hover">About us</Link>
-                    <Link to="" className="link link-hover">Contact</Link>
-                    <Link to="" className="link link-hover">Jobs</Link>
+                    <Link to="/about" className="link link-hover">About us</Link>
+                    <Link to="/contact" className="link link-hover">Contact</Link>
+                    <Link to="/" className="link link-hover">Jobs</Link>
                     <Link to="" className="link link-hover">Press kit</Link>
                 </div>
             </footer>
             <footer>
-                <p className='text-center py-4'>Copyright 2022 All Rights Reserved</p>
+                <p className='text-center py-4'>Copyright &copy; {year} All Rights Reserved</p>
             </footer>
         </section>
     );

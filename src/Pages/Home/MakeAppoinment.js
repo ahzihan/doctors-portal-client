@@ -5,13 +5,9 @@ import PrimaryButton from "../Shared/PrimaryButton";
 
 const MakeAppoinment = () => {
   return (
-    <div style={{ background: `url(${ appointment })`, backgroundSize: 'cover' }} className="mt-28 flex justify-center items-center">
+    <div style={{ background: `url(${ appointment })`, backgroundSize: 'cover' }} className="mt-8 lg:mt-28 flex justify-center items-center">
       <div className="flex-1 hidden lg:block">
-        <img
-          src={doctorSmall}
-          className="mt-[-100px] "
-          alt="appointment"
-        />
+        <img src={doctorSmall} className="mt-[-100px]" alt="appointment" />
       </div>
       <div className="flex-1 p-10 lg:p-0">
         <h3 className="text-secondary text-xl uppercase font-bold">

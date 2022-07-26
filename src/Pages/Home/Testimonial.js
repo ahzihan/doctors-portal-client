@@ -13,7 +13,7 @@ const Testimonial = () => {
         { _id: 3, title: 'Kajal Kranti', city: "Dhaka", img: people3 }
     ];
     return (
-        <section className='py-8 lg:py-14'>
+        <section className='mt-8 py-8 lg:py-14'>
             <div className='flex justify-between'>
                 <div className='flex-1 items-start'>
                     <h3 className='text-secondary text-md font-bold uppercase'>Testimonial</h3>
