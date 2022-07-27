@@ -34,7 +34,6 @@ const BookingModal = ( { treatment, date, setTreatment, refetch } ) => {
         } )
             .then( res => res.json() )
             .then( data => {
-                console.log( data );
                 if ( data.success ) {
                     toast( `Appointment is set, ${ formattedDate } at ${ slot }` );
                 }
@@ -44,9 +43,8 @@ const BookingModal = ( { treatment, date, setTreatment, refetch } ) => {
                 refetch();
                 setTreatment( null );
             } );
-
-
     };
+
     return (
         <div>
             <input type="checkbox" id="booking-modal" className="modal-toggle" />
