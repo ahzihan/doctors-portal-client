@@ -12,18 +12,16 @@ module.exports = {
           secondary: "#19D3AE",
           accent: "#3A4256",
           neutral: "#3d4451",
+          danger: "#ff0000",
+          gray: "#E5E1E6",
+          blue: "#0F52BA",
+          info: "#FFFCC9",
           "base-100": "#ffffff",
         },
       },
       "dark",
       "cupcake",
     ],
-  },
-  extend: {
-    backgroundImage: {
-      'hero-pattern': "url('./src/assets/images/bg.png')",
-      'footer-texture': "url('./src/assets/images/footer.png')",
-    }
   },
   plugins: [ require( "daisyui" ) ],
 };
