@@ -14,6 +14,7 @@ import SignUp from './Pages/Shared/SignUp';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import MyAppointments from './Pages/Dashboard/MyAppointments';
 import MyReview from './Pages/Dashboard/MyReview';
+import Users from './Pages/Dashboard/Users';
 
 function App() {
   return (
@@ -29,11 +30,12 @@ function App() {
         }></Route>
         <Route path="/dashboard" element={
           <RequireAuth>
-            <Dashboard/>
+            <Dashboard />
           </RequireAuth>
         }>
-        <Route index element={<MyAppointments />} />
-        <Route path='review' element={<MyReview />} />
+          <Route index element={<MyAppointments />} />
+          <Route path='review' element={<MyReview />} />
+          <Route path='users' element={<Users />} />
         </Route>
         <Route path="/reviews" element={<Reviews />}></Route>
         <Route path="/contact" element={<ContactUs />}></Route>

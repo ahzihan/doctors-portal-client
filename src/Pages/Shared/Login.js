@@ -6,22 +6,24 @@ import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin';
 import Loading from './Loading';
 import { toast } from 'react-toastify';
+import useToken from '../Hooks/useToken';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [ signInWithEmailAndPassword, user, loading, error ] = useSignInWithEmailAndPassword( auth );
     const [ sendPasswordResetEmail, sending ] = useSendPasswordResetEmail( auth );
+    const [ token ] = useToken( user );
 
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
     useEffect( () => {
-        if ( user ) {
+        if ( token ) {
             navigate( from, { replace: true } );
             toast( "User Login successfully" );
         }
-    }, [ user, from, navigate ] );
+    }, [ token, from, navigate ] );
 
     let errorMessage;
     if ( error ) {
