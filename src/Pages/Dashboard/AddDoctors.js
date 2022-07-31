@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import { useQuery } from 'react-query';
 import Loading from '../Shared/Loading';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AddDoctors = () => {
+    const navigate = useNavigate();
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
 
     const { data: services, isLoading } = useQuery( [ "services" ], () => fetch( 'http://localhost:5000/service' ).then( res => res.json() ) );
@@ -68,7 +70,10 @@ const AddDoctors = () => {
     };
     return (
         <form onSubmit={handleSubmit( onSubmit )} className='grid grid-cols-1 gap-5 max-w-md mx-auto'>
-            <h3 className='text-secondary text-center text-xl font-bold'>Add a New Doctor</h3>
+            <div className='flex justify-between py-3'>
+                <h3 className='text-xl text-secondary font-bold text-center'>Add a New Doctor</h3>
+                <Link className="btn-xs btn btn-secondary text-white" to="/dashboard/manageDoctor">View All</Link>
+            </div>
             <div className="form-control w-full max-w-md">
                 <input type="name" placeholder="Name" className="w-full input input-secondary bg-white max-w-md" {...register( "name",
                     {
@@ -101,7 +106,7 @@ const AddDoctors = () => {
                 </label>
             </div>
             <div className="form-control w-full max-w-md">
-                <select {...register( "specialty" )} name='slot' className="w-full input input-secondary bg-white max-w-md">
+                <select {...register( "specialty" )} className="w-full input input-secondary bg-white max-w-md">
                     {
                         services.map( service => <option key={service._id} value={service.name}>{service.name}</option> )
                     }
