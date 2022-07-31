@@ -18,6 +18,7 @@ const Users = () => {
     }
     return (
         <div className="overflow-x-auto">
+        <h3 className='text-xl text-secondary font-bold text-center py-3'>All Users List</h3>
             <table className="table table-compact w-full">
                 <thead>
                     <tr>

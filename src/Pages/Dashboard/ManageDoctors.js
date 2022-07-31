@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import Loading from '../Shared/Loading';
+import DeleteConfirmModal from './DeleteConfirmModal';
 import DoctorsTable from './DoctorsTable';
 
 const ManageDoctors = () => {
+    const [deleteDoctor,setDeleteDoctor]=useState(null);
     const { data: doctors, isLoading, refetch } = useQuery( [ 'doctors' ], () => fetch( 'http://localhost:5000/doctor', {
         headers: {
             authorization: `Bearer ${ localStorage.getItem( 'accessToken' ) }`
@@ -17,7 +19,7 @@ const ManageDoctors = () => {
 
     return (
         <div className="overflow-x-auto">
-            <div className='flex justify-between py-5'>
+            <div className='flex justify-between py-3'>
                 <h3 className='text-xl text-secondary font-bold'>All Doctors</h3>
                 <Link className="btn-xs btn btn-secondary text-white" to="/dashboard/addDoctor">Add New</Link>
             </div>
@@ -35,10 +37,13 @@ const ManageDoctors = () => {
                 </thead>
                 <tbody>
                     {
-                        doctors.map( ( doctor, index ) => <DoctorsTable refetch={refetch} index={index} key={doctor._id} doctor={doctor}></DoctorsTable> )
+                        doctors.map( ( doctor, index ) => <DoctorsTable setDeleteDoctor={setDeleteDoctor} refetch={refetch} index={index} key={doctor._id} doctor={doctor}></DoctorsTable> )
                     }
                 </tbody>
             </table>
+            {
+                deleteDoctor && <DeleteConfirmModal refetch={refetch} setDeleteDoctor={setDeleteDoctor} deleteDoctor={deleteDoctor}></DeleteConfirmModal>
+            }
         </div>
     );
 };

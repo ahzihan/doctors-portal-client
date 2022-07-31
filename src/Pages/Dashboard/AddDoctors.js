@@ -58,6 +58,7 @@ const AddDoctors = () => {
                         .then( data => {
                             if ( data.insertedId ) {
                                 toast.success( "Doctor added successfully." );
+                                navigate('/dashboard/manageDoctor');
                                 reset();
                             }
                             else {
