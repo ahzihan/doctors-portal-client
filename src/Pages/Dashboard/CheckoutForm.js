@@ -7,11 +7,13 @@ const CheckoutForm = ( { appointment } ) => {
     const [ cardError, setCardError ] = useState( '' );
     const [ clientSecret, setClientSecret ] = useState( '' );
     const [ success, setSuccess ] = useState( '' );
+    const [ processing, setProcessing ] = useState( '' );
     const [ transactionID, setTransactionID ] = useState( '' );
-    const { price, email, patientName } = appointment;
+    const { _id, price, email, patientName } = appointment;
+
 
     useEffect( () => {
-        fetch( `http://localhost:5000/create-payment-intent`, {
+        fetch( 'http://localhost:5000/create-payment-intent', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -26,6 +28,8 @@ const CheckoutForm = ( { appointment } ) => {
                 }
             } );
     }, [ price ] );
+
+    
 
     const handleSubmit = async ( event ) => {
         event.preventDefault();
@@ -46,6 +50,8 @@ const CheckoutForm = ( { appointment } ) => {
         );
         setCardError( error?.message || '' );
         setSuccess( '' );
+        setProcessing(true);
+
         //Confirm card payment
 
         const { paymentIntent, error: intentError } = await stripe.confirmCardPayment(
@@ -62,10 +68,28 @@ const CheckoutForm = ( { appointment } ) => {
         );
         if ( intentError ) {
             setCardError( intentError?.message );
+            setProcessing(false);
         } else {
             setCardError( '' );
             setTransactionID( paymentIntent.id );
             setSuccess( 'Congrats! Your payment is completed' );
+
+            //Store payment info in database
+            const payment={
+                appointment: _id,
+                transactionId: paymentIntent.id 
+            }
+            fetch(`http://localhost:5000/booking/${_id}`,{
+                method:'PATCH',
+                headers:{
+                    'content-type': 'application/json',
+                    authorization: `Bearer ${ localStorage.getItem( 'accessToken' ) }`
+                },
+                body: JSON.stringify(payment)
+            }).then(res=>res.json()).then(data=>{
+                setProcessing(false);
+                console.log(data);
+            })
         }
     };
     return (
@@ -87,7 +111,7 @@ const CheckoutForm = ( { appointment } ) => {
                         },
                     }}
                 />
-                <button className='btn btn-sm btn-secondary mt-4' type="submit" disabled={!stripe || !clientSecret}>Pay</button>
+                <button className='btn btn-sm btn-secondary mt-4' type="submit" disabled={!stripe || !clientSecret || success}>Pay</button>
             </form>
             {
                 cardError && <p className='text-red-500'>{cardError}</p>
