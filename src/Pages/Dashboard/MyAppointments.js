@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import auth from '../../firebase.init';
 import { signOut } from 'firebase/auth';
 
@@ -40,21 +40,24 @@ const MyAppointments = () => {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Treatment</th>
+                        <th>Payment</th>
                     </tr>
                 </thead>
                 <tbody>
-                        {
-                            appointments ? appointments.map( ( a, index ) => <tr key={a._id}>
+                    {
+                        appointments ? appointments.map( ( a, index ) => <tr key={a._id}>
                             <th>{index + 1}</th>
                             <td>{a.patientName}</td>
                             <td>{a.date}</td>
                             <td>{a.slot}</td>
                             <td>{a.treatment}</td>
+                            <td>{( a.price && !a.paid ) && <Link to={`/dashboard/payment/${ a._id }`}><button className='btn btn-xs btn-success'>Pay</button></Link>}</td>
+                            <td>{( a.price && a.paid ) && <span className='text-success'>Paid</span>}</td>
                         </tr> )
-                        : <tr>
-                            <td><h2 className='text-center text-black'>No Data Found</h2></td>
-                        </tr>
-                        }
+                            : <tr>
+                                <td><h2 className='text-center text-black'>No Data Found</h2></td>
+                            </tr>
+                    }
                 </tbody>
             </table>
         </div>
